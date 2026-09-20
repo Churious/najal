@@ -1,0 +1,53 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Quiz {
+  id             String        @id @default(cuid())
+  publicId       String        @unique
+  ownerTokenHash String
+  nickname       String
+  createdAt      DateTime      @default(now())
+  answers        QuizAnswer[]
+  participants   Participant[]
+}
+
+model QuizAnswer {
+  id             String @id @default(cuid())
+  quizId         String
+  quiz           Quiz   @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  questionId     Int
+  selectedOption Int
+
+  @@unique([quizId, questionId])
+  @@index([quizId])
+}
+
+model Participant {
+  id        String              @id @default(cuid())
+  quizId    String
+  quiz      Quiz                @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  nickname  String
+  score     Int
+  createdAt DateTime            @default(now())
+  answers   ParticipantAnswer[]
+
+  @@index([quizId])
+}
+
+model ParticipantAnswer {
+  id             String      @id @default(cuid())
+  participantId  String
+  participant    Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  questionId     Int
+  selectedOption Int
+  isCorrect      Boolean
+
+  @@index([participantId])
+}
