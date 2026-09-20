@@ -6,6 +6,8 @@ services:
       - .env
     environment:
       DATABASE_URL: ${DATABASE_URL}
+      HOSTNAME: "0.0.0.0"
+      PORT: "3000"
     depends_on:
       postgres:
         condition: service_healthy
