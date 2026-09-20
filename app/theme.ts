@@ -40,7 +40,10 @@ export function josa(word: string, withJong: string, withoutJong: string): strin
 export function iramyeon(word: string): string {
   return `${word}${hasJongseong(word) ? "이라면" : "라면"}`;
 }
-/** Web Share 우선, 미지원시 클립보드 복사 fallback. 성공시 "shared"|"copied", 취소시 "dismissed". */
+/** Web Share 우선, 미지원/실패 시 클립보드 복사 fallback.
+ * - 공유창을 사용자가 닫으면(AbortError) "dismissed" — 오류 표시 없음
+ * - 그 외 공유 오류는 복사 fallback으로 진행
+ * - HTTP 등 insecure context에서는 navigator.clipboard가 없을 수 있어 copyText가 textarea fallback까지 처리 */
 export async function shareOrCopy(args: {
   title: string;
   text: string;
@@ -51,32 +54,40 @@ export async function shareOrCopy(args: {
     try {
       await navigator.share({ title, text, url });
       return "shared";
-    } catch {
-      return "dismissed";
+    } catch (e) {
+      if (e instanceof DOMException && e.name === "AbortError") return "dismissed";
+      // 그 외 오류는 아래 복사 fallback으로 진행
     }
   }
-  try {
-    await navigator.clipboard.writeText(url);
-    return "copied";
-  } catch {
-    return "failed";
-  }
+  return (await copyText(url)) ? "copied" : "failed";
 }
 
 export async function copyText(text: string): Promise<boolean> {
   try {
-    await navigator.clipboard.writeText(text);
-    return true;
+    if (
+      typeof navigator !== "undefined" &&
+      navigator.clipboard &&
+      typeof navigator.clipboard.writeText === "function"
+    ) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+    throw new Error("clipboard-unavailable");
   } catch {
-    // 구형 브라우저 fallback
+    // 구형 브라우저 / insecure context / 권한 거부 fallback
     try {
       const ta = document.createElement("textarea");
       ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.top = "0";
+      ta.style.opacity = "0";
       document.body.appendChild(ta);
+      ta.focus();
       ta.select();
-      document.execCommand("copy");
+      const ok = document.execCommand("copy");
       document.body.removeChild(ta);
-      return true;
+      return ok;
     } catch {
       return false;
     }

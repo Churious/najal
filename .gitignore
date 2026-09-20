@@ -5,3 +5,7 @@ out/
 .env.local
 *.log
 .DS_Store
+
+# local E2E scripts (not for deploy)
+e2e-verify.cjs
+dbg-share.cjs

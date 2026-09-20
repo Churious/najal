@@ -24,7 +24,7 @@ module.exports = {
         "4xl": "2rem",
       },
       boxShadow: {
-        card: "0 6px 24px -8px rgba(225, 29, 72, 0.18)",
+        card: "0 4px 18px -8px rgba(42, 30, 26, 0.12)",
         soft: "0 2px 12px -2px rgba(42, 30, 26, 0.10)",
         pop: "0 10px 30px -10px rgba(225, 29, 72, 0.45)",
       },
