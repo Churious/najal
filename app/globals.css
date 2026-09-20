@@ -3,11 +3,8 @@
 @tailwind utilities;
 
 body {
-  background-color: #fff8f1;
-  background-image:
-    radial-gradient(circle at 15% 0%, #ffe4e6 0%, transparent 45%),
-    radial-gradient(circle at 90% 12%, #fef3c7 0%, transparent 40%),
-    radial-gradient(circle at 50% 100%, #ffe4e6 0%, transparent 50%);
+  background-color: #fffbf4;
+  background-image: radial-gradient(circle at 50% 0%, #ffe9ec 0%, transparent 55%);
   background-attachment: fixed;
   color: #2a1e1a;
 }
@@ -27,6 +24,48 @@ body {
   }
   .brand-opt {
     @apply flex min-h-[60px] w-full items-center gap-3 rounded-2xl border-2 bg-white px-4 py-3 text-left text-[15px] leading-snug shadow-soft transition active:scale-[0.99] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200;
+  }
+
+  /* 단톡방 말풍선 */
+  .chat-row {
+    @apply flex w-full items-end gap-2;
+  }
+  .chat-bubble-left {
+    @apply max-w-[80%] rounded-2xl rounded-tl-md bg-white px-3.5 py-2.5 text-left text-sm font-medium leading-relaxed text-ink shadow-soft ring-1 ring-brand-100;
+  }
+  .chat-bubble-right {
+    @apply max-w-[80%] rounded-2xl rounded-tr-md bg-brand-600 px-3.5 py-2.5 text-left text-sm font-bold leading-relaxed text-white shadow-pop;
+  }
+  .chat-name {
+    @apply mb-1 block text-[11px] font-bold text-ink/40;
+  }
+
+  /* 시험지: 줄눈 + 왼쪽 빨간 여백선 */
+  .exam-paper {
+    background-color: #fffdf9;
+    background-image:
+      linear-gradient(90deg, transparent 44px, rgba(225, 29, 72, 0.25) 44px, rgba(225, 29, 72, 0.25) 46px, transparent 46px),
+      repeating-linear-gradient(180deg, transparent 0, transparent 31px, rgba(42, 30, 26, 0.08) 31px, rgba(42, 30, 26, 0.08) 32px);
+    @apply rounded-3xl shadow-card ring-1 ring-brand-100;
+  }
+  /* 형광펜 마커 */
+  .marker {
+    background-image: linear-gradient(180deg, transparent 55%, rgba(251, 191, 36, 0.55) 55%, rgba(251, 191, 36, 0.55) 95%, transparent 95%);
+  }
+  /* 손그림 동그라미 (낙서) */
+  .doodle-circle {
+    border: 3px solid #e11d48;
+    border-radius: 48% 52% 55% 45% / 55% 46% 54% 45%;
+    transform: rotate(-2deg);
+  }
+  /* 채점 도장 */
+  .stamp {
+    @apply inline-block -rotate-6 rounded-lg border-[3px] border-brand-600 px-2.5 py-1 text-xs font-black tracking-wide text-brand-600;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+  }
+  /* 와시 테이프 (카드 상단 고정) */
+  .tape {
+    @apply absolute -top-3 left-1/2 h-6 w-24 -translate-x-1/2 rotate-[-4deg] rounded-sm bg-point-400/60 shadow-soft backdrop-blur-[1px];
   }
 }
 
@@ -72,4 +111,23 @@ body {
 }
 .float-y {
   animation: float-y 3s ease-in-out infinite;
+}
+
+/* 낙서 밑줄 (SVG squiggle 대신 CSS) */
+.doodle-underline {
+  text-decoration: underline wavy #e11d48 2px;
+  text-underline-offset: 5px;
+}
+
+/* 답변 미선택 hover: hover 가능 기기에서만 옅은 틴트 (선택 상태와 혼동 금지) */
+@media (hover: hover) {
+  .opt-idle:hover {
+    border-color: #f9a8d4;
+    background-color: rgba(255, 241, 242, 0.7);
+  }
+}
+
+/* 단톡방 아바타: 이모지 대신 이름 한 글자 */
+.avatar {
+  @apply flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-500 text-xs font-extrabold text-white;
 }

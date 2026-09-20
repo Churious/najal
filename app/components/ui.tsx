@@ -31,7 +31,10 @@ export function ProgressBar({ index, total }: { index: number; total: number }) 
   );
 }
 
-/** 답변 선택지 버튼: 선택상태(배경+테두리+체크), 충분한 높이, aria-pressed */
+/** 답변 선택지 버튼: 선택(채움·강조)과 hover를 명확히 분리.
+ * - 선택: bg-brand-600 + 흰 글자 + 선택됨 배지 (hover와 착각 불가)
+ * - 미선택 hover: hover 가능 기기에서만 옅은 틴트 (.opt-idle, 아래 media 쿼리) — 채움 없음
+ * - 키보드 포커스: ring-4 유지 (선택 스타일과 다름) */
 export function OptionButton({
   label,
   selected,
@@ -48,19 +51,26 @@ export function OptionButton({
       aria-pressed={selected}
       className={`brand-opt break-words ${
         selected
-          ? "border-brand-600 bg-brand-50 font-bold text-brand-900"
-          : "border-slate-200 text-ink hover:border-brand-200 hover:bg-brand-50/50"
+          ? "border-brand-600 bg-brand-600 font-bold text-white shadow-pop"
+          : "opt-idle border-slate-200 bg-white text-ink"
       }`}
     >
       <span
         aria-hidden
-        className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 text-sm font-bold ${
-          selected ? "border-brand-600 bg-brand-600 text-white" : "border-slate-300 text-transparent"
+        className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 text-sm font-bold transition ${
+          selected
+            ? "border-white bg-white text-brand-600"
+            : "border-slate-300 bg-white text-transparent"
         }`}
       >
         ✓
       </span>
       <span className="min-w-0 flex-1">{label}</span>
+      {selected && (
+        <span aria-hidden className="shrink-0 rounded-full bg-white/25 px-2 py-0.5 text-[11px] font-extrabold">
+          선택됨
+        </span>
+      )}
     </button>
   );
 }
@@ -82,7 +92,7 @@ export function CopyLinkCard({ url, label }: { url: string; label: string }) {
           if (await copyText(url)) setToast(true);
         }}
         aria-label={`${label} 복사하기`}
-        className="brand-card flex w-full items-center gap-3 p-4 text-left transition hover:shadow-soft active:scale-[0.99] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+        className="brand-card flex w-full items-center gap-3 p-4 text-left transition active:scale-[0.99] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
       >
         <span aria-hidden className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-brand-50 text-xl">
           🔗
@@ -97,7 +107,7 @@ export function CopyLinkCard({ url, label }: { url: string; label: string }) {
       </button>
       {toast && (
         <p role="status" className="toast-anim absolute -top-10 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full bg-ink px-4 py-2 text-xs font-bold text-white shadow-soft">
-          링크 복사됐어요! 친구들에게 보내보세요 🎉
+          링크 복사됐어요! 친구들에게 보내보세요
         </p>
       )}
     </div>
@@ -105,10 +115,12 @@ export function CopyLinkCard({ url, label }: { url: string; label: string }) {
 }
 
 /** 상단 통계 카드 (관리용) */
-export function StatCard({ emoji, label, value }: { emoji: string; label: string; value: string }) {
+export function StatCard({ emoji, label, value }: { emoji?: string; label: string; value: string }) {
   return (
     <div className="brand-card min-w-0 p-3 text-center">
-      <p aria-hidden className="text-xl">{emoji}</p>
+      {emoji ? (
+        <p aria-hidden className="text-xl">{emoji}</p>
+      ) : null}
       <p className="mt-1 truncate text-[11px] font-medium text-ink/50">{label}</p>
       <p className="truncate text-xl font-extrabold text-ink">{value}</p>
     </div>

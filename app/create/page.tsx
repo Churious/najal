@@ -53,16 +53,16 @@ export default function CreatePage() {
   if (step === 0) {
     return (
       <main>
-        <p className="text-center text-sm font-extrabold text-brand-600">🧠 나잘알</p>
-        <h1 className="mt-2 text-center text-2xl font-extrabold leading-snug text-ink">
-          친구들을 시험할
-          <br />
-          시험지를 만들어보세요
+        <p className="stamp" aria-hidden>
+          나잘알 시험지 만들기
+        </p>
+        <h1 className="mt-3 max-w-[300px] text-balance text-2xl font-black leading-snug text-ink">
+          먼저 네 이름부터 알려줘
         </h1>
-        <p className="mt-2 text-center text-xs text-ink/50">10문제 · 회원가입 없음 · 약 1분</p>
-        <div className="brand-card mt-6 p-5">
-          <label htmlFor="nickname" className="text-sm font-bold text-ink">
-            내 닉네임
+        <p className="mt-2 text-sm text-ink/60">친구들이 이 이름을 보고 퀴즈를 풀게 돼요.</p>
+        <div className="exam-paper relative mt-6 p-5 pl-14">
+          <label htmlFor="nickname" className="mt-2 block text-sm font-bold text-ink">
+            친구들에게 보일 이름
           </label>
           <input
             id="nickname"
@@ -79,7 +79,7 @@ export default function CreatePage() {
             </p>
           )}
           <button onClick={startQuiz} className="brand-btn-primary mt-4 min-h-[60px]">
-            내 답 정하러 가기 →
+            내 답 고르기 →
           </button>
         </div>
       </main>
@@ -92,11 +92,14 @@ export default function CreatePage() {
 
   return (
     <main>
-      <div className="brand-card p-5">
-        <ProgressBar index={index} total={QUESTIONS.length} />
+      <div className="exam-paper relative p-5 pl-12">
+        <p className="stamp" aria-hidden>나잘알 시험지 {index + 1}/{QUESTIONS.length}</p>
+        <div className="mt-2">
+          <ProgressBar index={index} total={QUESTIONS.length} />
+        </div>
         {isLast && (
           <p className="mt-3 rounded-xl bg-point-400/20 px-3 py-2 text-center text-xs font-extrabold text-point-500">
-            🎉 마지막 문제예요! 조금만 더 힘내요
+            마지막 문제예요! 조금만 더 힘내요
           </p>
         )}
         {/* key로 질문 전환 애니메이션 */}
@@ -104,7 +107,7 @@ export default function CreatePage() {
           <h1 className="mt-4 min-w-0 break-words text-xl font-extrabold leading-snug text-ink">
             <span className="mr-1 text-brand-600">Q{index + 1}.</span> {q.text}
           </h1>
-          <p className="mt-1 text-xs text-ink/50">내 정답을 골라주세요 — 친구들이 이걸 맞혀야 해요</p>
+          <p className="mt-1 text-xs text-ink/50">네 생각을 골라봐 — 친구들이 이 답을 맞힐 수 있을까?</p>
           <div className="mt-4 space-y-2.5" role="group" aria-label={`질문 ${index + 1}: ${q.text}`}>
             {q.options.map((opt, i) => (
               <OptionButton
@@ -139,7 +142,7 @@ export default function CreatePage() {
               disabled={!done || loading}
               className="brand-btn-primary flex-[2] !py-3.5 !text-base"
             >
-              {loading ? "만드는 중..." : "🎉 시험지 완성하기"}
+              {loading ? "만드는 중..." : "시험지 완성하기"}
             </button>
           )}
         </div>

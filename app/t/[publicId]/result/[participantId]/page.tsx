@@ -79,20 +79,20 @@ export default function ResultPage({
   return (
     <main>
       <div className="brand-card overflow-hidden">
-        <div className="bg-gradient-to-br from-brand-500 via-brand-600 to-point-500 px-5 pb-6 pt-5 text-center text-white">
-          <p className="truncate text-xs font-bold text-white/80">
-            🧠 <span className="break-words">{result.ownerNickname}</span>의 나잘알 ·{" "}
-            <span className="break-words">{result.nickname}</span>의 결과
+        <div className="bg-ink px-5 pb-6 pt-5 text-center text-white">
+          <p className="truncate text-xs font-bold text-white/70">
+            <span className="break-words">{result.ownerNickname}</span>의 나잘알 ·{" "}
+            <span className="break-words">{result.nickname}</span>의 성적표
           </p>
           <p className="mt-2 text-6xl font-black tracking-tight">
             {result.score}
-            <span className="text-xl font-bold text-white/70">/100</span>
+            <span className="text-xl font-bold text-white/60">/100</span>
           </p>
-          <p className="mx-auto mt-2 inline-block rounded-full bg-white/20 px-4 py-1.5 text-sm font-extrabold">
-            {grade.emoji} {grade.label}
+          <p className="mx-auto mt-3 inline-block rotate-[-3deg] rounded-lg border-[3px] border-point-400 px-4 py-1.5 text-sm font-black tracking-wide text-point-400">
+            {grade.label}
           </p>
-          <p className="mt-2 break-words text-sm font-medium text-white/90">{result.message}</p>
-          <p className="mt-1 text-xs text-white/70">
+          <p className="mt-3 break-words text-sm font-medium text-white/85">{result.message}</p>
+          <p className="mt-1 text-xs text-white/60">
             {result.totalParticipants}명 중 {result.rank}위 · {result.totalQuestions}문제 중{" "}
             {result.correctCount}개 정답
           </p>
@@ -100,13 +100,15 @@ export default function ResultPage({
 
         <div className="p-5">
           {result.wrongAnswers.length > 0 && (
-            <section>
-              <h2 className="font-extrabold text-ink">아깝게 틀린 문제 👀</h2>
+            <section aria-label="오답노트">
+              <h2 className="font-extrabold text-ink">
+                오답노트 <span className="text-xs font-bold text-ink/40">— 이걸 틀리면 조금 서운함</span>
+              </h2>
               <ul className="mt-3 space-y-2.5">
                 {result.wrongAnswers.map((w) => (
-                  <li key={w.questionId} className="rounded-2xl bg-cream p-3.5 text-sm">
+                  <li key={w.questionId} className="exam-paper p-4 pl-12 text-sm">
                     <p className="break-words font-bold text-ink">{w.questionText}</p>
-                    <p className="mt-1 break-words text-ink/60">내 예상: {w.guessed}</p>
+                    <p className="mt-1 break-words text-ink/60">네 예상: {w.guessed}</p>
                     <p className="break-words font-bold text-brand-700">실제 답: {w.actual}</p>
                   </li>
                 ))}
@@ -116,7 +118,7 @@ export default function ResultPage({
 
           {board.length > 0 && (
             <section className="mt-6">
-              <h2 className="font-extrabold text-ink">🏅 리더보드 TOP 5</h2>
+              <h2 className="font-extrabold text-ink">리더보드 TOP 5</h2>
               <ol className="mt-3 space-y-2">
                 {board.map((e, i) => (
                   <li
@@ -128,7 +130,7 @@ export default function ResultPage({
                     }`}
                   >
                     <span className="min-w-0 truncate">
-                      {i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `${i + 1}위`}{" "}
+                      {i === 0 ? "1위" : i === 1 ? "2위" : i === 2 ? "3위" : `${i + 1}위`}{" "}
                       <span className="break-words">{e.nickname}</span>
                     </span>
                     <span className="shrink-0 font-extrabold">{e.score}점</span>
@@ -142,13 +144,13 @@ export default function ResultPage({
             href={`/t/${publicId}`}
             className="brand-btn-ghost mt-6 block min-h-[56px] content-center !text-base"
           >
-            다른 친구도 풀어보기 👀
+            다른 친구도 풀어보기
           </Link>
           <Link
             href="/create"
             className="brand-btn-primary mt-2.5 block min-h-[60px] content-center"
           >
-            내 퀴즈 만들기 🚀
+            내 퀴즈 만들기
           </Link>
         </div>
       </div>
@@ -159,6 +161,7 @@ export default function ResultPage({
           score: result.score,
           publicId,
           quizUrl: typeof window !== "undefined" ? `${window.location.origin}/t/${publicId}` : `/t/${publicId}`,
+          mostMissed: result.wrongAnswers[0]?.questionText,
         }}
       />
     </main>

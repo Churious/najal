@@ -39,10 +39,9 @@ export default function TakeQuizPage({ params }: { params: { publicId: string } 
   if (notFound) {
     return (
       <main className="text-center">
-        <div aria-hidden className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-white text-5xl shadow-card">
-          🥲
-        </div>
-        <h1 className="mt-4 text-xl font-extrabold text-ink">퀴즈를 찾을 수 없어요</h1>
+        <h1 className="mx-auto mt-4 max-w-[300px] text-balance text-xl font-extrabold leading-snug text-ink">
+          퀴즈를 찾을 수 없어요
+        </h1>
         <p className="mt-2 text-sm text-ink/60">주소를 다시 확인해 주세요.</p>
         <Link href="/" className="brand-btn-primary mt-6 block min-h-[56px] content-center">
           홈으로
@@ -53,23 +52,28 @@ export default function TakeQuizPage({ params }: { params: { publicId: string } 
 
   return (
     <main className="text-center">
-      <p className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-1.5 text-sm font-extrabold text-brand-600 shadow-soft">
-        <span aria-hidden>🧠</span> {owner ? <span className="max-w-[180px] truncate">{owner}의 나잘알</span> : "나잘알"}
+      <p className="stamp" aria-hidden>
+        {owner ? (
+          <span className="inline-block max-w-[200px] truncate align-bottom">{owner}</span>
+        ) : (
+          "나잘알"
+        )}
+        의 답을 맞혀보세요
       </p>
-      <h1 className="mx-auto mt-4 max-w-[320px] text-balance text-2xl font-extrabold leading-snug text-ink">
+      <h1 className="mx-auto mt-3 max-w-[320px] text-balance text-2xl font-black leading-snug text-ink">
         {owner ? (
           <>
-            <span className="min-w-0 break-words text-brand-600">{owner}</span>를 얼마나 잘 알아?
+            <span className="min-w-0 break-words text-brand-600">{owner}</span>의 답을 맞혀보세요
           </>
         ) : (
           <>나를 얼마나 잘 알아?</>
         )}
       </h1>
-      <p className="mt-2 text-sm text-ink/60">10문제 · 약 1분 · 누가 제일 잘 아는지 보여줘!</p>
+      <p className="mt-2 text-sm text-ink/60">10문제 · 약 1분 · 누가 제일 잘 아는지 확인해보자</p>
 
-      <div className="brand-card mt-6 p-5 text-left">
-        <label htmlFor="join-nickname" className="text-sm font-bold text-ink">
-          도전할 내 닉네임
+      <div className="exam-paper relative mt-6 p-5 pl-14 text-left">
+        <label htmlFor="join-nickname" className="mt-2 block text-sm font-bold text-ink">
+          도전할 내 이름
         </label>
         <input
           id="join-nickname"
@@ -86,7 +90,7 @@ export default function TakeQuizPage({ params }: { params: { publicId: string } 
           </p>
         )}
         <button onClick={join} className="brand-btn-primary mt-4 min-h-[60px]">
-          도전하기 🔥
+          도전 시작하기
         </button>
       </div>
     </main>

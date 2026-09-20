@@ -55,11 +55,11 @@ export default function ManagePage({ params }: { params: { publicId: string } })
   const share = async () => {
     const r = await shareOrCopy({
       title: "나잘알",
-      text: "내 나잘알에 도전해 봐! 너는 나를 얼마나 알까? 👀",
+      text: "내 나잘알에 도전해 봐! 너는 나를 얼마나 알까?",
       url: `${window.location.origin}/t/${publicId}`,
     });
     setShared(
-      r === "shared" ? "공유했어요 🎉" : r === "copied" ? "링크 복사됐어요! 친구들에게 보내보세요 🎉" : "",
+      r === "shared" ? "공유했어요" : r === "copied" ? "링크 복사됐어요! 친구들에게 보내보세요" : "",
     );
   };
 
@@ -67,7 +67,7 @@ export default function ManagePage({ params }: { params: { publicId: string } })
     return (
       <main className="text-center">
         <div aria-hidden className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-white text-5xl shadow-card">
-          🔒
+          ?
         </div>
         <h1 className="mx-auto mt-4 max-w-[300px] text-balance text-lg font-extrabold leading-snug text-ink">
           {error}
@@ -86,20 +86,20 @@ export default function ManagePage({ params }: { params: { publicId: string } })
   return (
     <main>
       {/* 관리 헤더: 관리용임을 명시 */}
-      <p className="text-center text-xs font-bold text-ink/40">🔧 나만 보는 관리 화면</p>
+      <p className="text-center text-xs font-bold text-ink/40">나만 보는 관리 화면</p>
       <h1 className="mt-1 truncate text-center text-2xl font-extrabold text-ink">
         <span className="break-words">{data.nickname}</span>의 나잘알 관리
       </h1>
 
       <div className="mt-4 grid grid-cols-3 gap-2.5">
-        <StatCard emoji="👥" label="총 참가자" value={`${data.totalParticipants}명`} />
-        <StatCard emoji="📊" label="평균 점수" value={`${data.average}점`} />
-        <StatCard emoji="👑" label="최고 점수" value={`${data.max}점`} />
+        <StatCard label="총 참가자" value={`${data.totalParticipants}명`} />
+        <StatCard label="평균 점수" value={`${data.average}점`} />
+        <StatCard label="최고 점수" value={`${data.max}점`} />
       </div>
 
       <section className="brand-card mt-3 overflow-hidden">
-        <div className="bg-gradient-to-r from-brand-600 to-point-500 px-5 py-4 text-white">
-          <p className="text-xs font-bold text-white/80">💞 나잘알도 (전체 정답률)</p>
+        <div className="bg-ink px-5 py-4 text-white">
+          <p className="text-xs font-bold text-white/70">나잘알도 (전체 정답률)</p>
           <p className="text-3xl font-black">{data.familiarity}%</p>
           {data.mostMisunderstood && (
             <p className="mt-1 min-w-0 break-words text-xs text-white/85">
@@ -112,7 +112,7 @@ export default function ManagePage({ params }: { params: { publicId: string } })
 
       {/* 공유용 영역과 분리: 친구 모으기 카드 */}
       <section className="brand-card mt-3 p-4">
-        <p className="text-sm font-extrabold text-ink">📤 친구들 더 모으기</p>
+        <p className="text-sm font-extrabold text-ink">친구들 더 모으기</p>
         <div className="mt-2">
           <CopyLinkCard url={origin ? `${origin}${quizPath}` : quizPath} label="내 시험지 링크" />
         </div>
@@ -130,10 +130,9 @@ export default function ManagePage({ params }: { params: { publicId: string } })
       </section>
 
       <section className="mt-6">
-        <h2 className="font-extrabold text-ink">🏅 리더보드</h2>
+        <h2 className="font-extrabold text-ink">리더보드</h2>
         {data.leaderboard.length === 0 ? (
           <div className="brand-card mt-3 p-6 text-center">
-            <p aria-hidden className="text-4xl">🌱</p>
             <p className="mt-2 text-sm font-bold text-ink">아직 도전한 친구가 없어요</p>
             <p className="mt-1 text-xs text-ink/50">링크를 공유하고 누가 제일 잘 아는지 확인해보세요!</p>
           </div>
@@ -145,7 +144,7 @@ export default function ManagePage({ params }: { params: { publicId: string } })
                 className="brand-card flex items-center justify-between gap-2 !rounded-2xl px-4 py-2.5 text-sm"
               >
                 <span className="min-w-0 truncate font-medium text-ink">
-                  {i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `${i + 1}위`}{" "}
+                  {i === 0 ? "1위" : i === 1 ? "2위" : i === 2 ? "3위" : `${i + 1}위`}{" "}
                   <span className="break-words font-bold">{e.nickname}</span>
                 </span>
                 <span className="shrink-0 font-extrabold text-brand-700">{e.score}점</span>
@@ -156,7 +155,7 @@ export default function ManagePage({ params }: { params: { publicId: string } })
       </section>
 
       <section className="mt-6">
-        <h2 className="font-extrabold text-ink">📝 질문별 분포</h2>
+        <h2 className="font-extrabold text-ink">질문별 분포</h2>
         <ul className="mt-3 space-y-2.5">
           {data.distributions.map((d) => {
             const max = Math.max(...d.counts, 1);

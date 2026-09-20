@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "나잘알 — 친구들은 나를 얼마나 알고 있을까?",
-  description: "10개 질문으로 만드는 나를 맞히는 퀴즈. 회원가입 없음, 약 1분.",
+  title: "나잘알 — 솔직히 너, 나 잘 알지?",
+  description: "친구들이 나를 얼마나 맞힐 수 있는지 시험해보세요. 10문제 · 회원가입 없음 · 약 1분.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

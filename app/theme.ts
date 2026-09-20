@@ -5,23 +5,41 @@
 
 export const BRAND = {
   name: "나잘알",
-  tagline: "친구들은 나를 얼마나 잘 알고 있을까?",
-  subline: "친구들에게 나를 맞히는 퀴즈를 내보세요",
+  tagline: "솔직히 너, 나 잘 알지?",
+  subline: "친구들이 나를 얼마나 맞힐 수 있는지 시험해보세요.",
   meta: "10문제 · 회원가입 없음 · 약 1분",
-  ctaCreate: "친구들 시험 내기",
+  ctaCreate: "이거 맞혀봐",
+  bottomline: "누가 나를 제일 잘 아는지 확인해보자",
 } as const;
 
-/** 스토리카드/결과용 등급 (금지표현 제외) */
+/** 스토리/결과용 등급 (정답률 기준, 금지표현 제외) */
 export function gradeFor(score: number): { label: string; emoji: string } {
-  if (score >= 100) return { label: "찐친 중의 찐친", emoji: "🏆" };
-  if (score >= 90) return { label: "찐친", emoji: "❤️" };
-  if (score >= 80) return { label: "꽤 친한 사이", emoji: "😊" };
-  if (score >= 70) return { label: "제법 친함", emoji: "🌱" };
-  if (score >= 50) return { label: "알아가는 중", emoji: "🌤️" };
-  if (score >= 30) return { label: "아직 멀었음", emoji: "🧭" };
-  return { label: "이제부터 친해져요", emoji: "🌱" };
+  if (score >= 90) return { label: "찐친 인증", emoji: "🏆" };
+  if (score >= 60) return { label: "꽤 잘 아는 편", emoji: "😊" };
+  if (score >= 30) return { label: "아직 알아가는 중", emoji: "🌱" };
+  return { label: "우리 친한 거 맞지?", emoji: "🧭" };
 }
 
+/** 한국어 받침(종성) 여부: 마지막 음절 코드로 판정 */
+export function hasJongseong(word: string): boolean {
+  const t = word.trim();
+  const ch = t.slice(-1);
+  if (!ch) return false;
+  const code = ch.charCodeAt(0);
+  if (code < 0xac00 || code > 0xd7a3) return false;
+  return (code - 0xac00) % 28 !== 0;
+}
+
+/** 조사 선택: 받침 있으면 first, 없으면 second. 예: josa(who,"이","가") */
+export function josa(word: string, withJong: string, withoutJong: string): string {
+  return hasJongseong(word) ? withJong : withoutJong;
+}
+
+/** “~이라면/라면” 조사 통째로 반환 — 현재 UI에서는 사용 금지.
+ * 조사 분기가 필요하면 “{nickname}의 답을 맞혀보세요” 형태로 회피할 것. */
+export function iramyeon(word: string): string {
+  return `${word}${hasJongseong(word) ? "이라면" : "라면"}`;
+}
 /** Web Share 우선, 미지원시 클립보드 복사 fallback. 성공시 "shared"|"copied", 취소시 "dismissed". */
 export async function shareOrCopy(args: {
   title: string;

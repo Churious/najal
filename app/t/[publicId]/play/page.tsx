@@ -35,10 +35,12 @@ export default function PlayPage({ params }: { params: { publicId: string } }) {
   if (!initialNickname && !nickname) {
     return (
       <main>
-        <p className="text-center text-sm font-extrabold text-brand-600">
-          🧠 <span className="max-w-[160px] truncate align-bottom">{who}의 나잘알</span>
+        <p className="stamp" aria-hidden>
+          <span className="inline-block max-w-[160px] truncate align-bottom">{who}</span>의 나잘알
         </p>
-        <h1 className="mt-2 text-center text-xl font-extrabold text-ink">닉네임을 입력해 주세요</h1>
+        <h1 className="mt-3 max-w-[300px] text-balance text-xl font-black text-ink">
+          {who}의 답을 맞혀보세요
+        </h1>
         <NicknameForm
           onSubmit={(name) => {
             setNickname(name);
@@ -80,24 +82,25 @@ export default function PlayPage({ params }: { params: { publicId: string } }) {
 
   return (
     <main>
-      <div className="brand-card p-5">
-        <p className="truncate text-center text-sm font-extrabold text-brand-600">
-          🧠 {who}의 나잘알 <span className="font-medium text-ink/40">· {nickname} 도전 중</span>
+      <div className="exam-paper relative p-5 pl-12">
+        <p className="mt-2 truncate text-center text-sm font-extrabold text-ink">
+          <span className="min-w-0 break-words">{who}</span>의 나잘알{" "}
+          <span className="font-medium text-ink/40">· 친구 도전 중 {index + 1}/{QUESTIONS.length}</span>
         </p>
         <div className="mt-3">
           <ProgressBar index={index} total={QUESTIONS.length} />
         </div>
         {isLast && (
           <p className="mt-3 rounded-xl bg-point-400/20 px-3 py-2 text-center text-xs font-extrabold text-point-500">
-            🎉 마지막 문제예요!
+            마지막 문제예요!
           </p>
         )}
         <div key={index} className="q-anim">
-          <h1 className="mt-4 min-w-0 break-words text-xl font-extrabold leading-snug text-ink">
-            <span className="min-w-0 break-words text-brand-600">{who}</span>
-            {who.endsWith("이") || who.endsWith("가") ? "라면" : "이라면"}?
-            <br />
-            <span className="text-lg font-bold text-ink">{q.text}</span>
+          <p className="mt-4 rounded-2xl bg-white/80 px-3 py-2 text-xs font-bold text-ink/50 ring-1 ring-brand-100">
+            {who}의 답을 맞혀보세요
+          </p>
+          <h1 className="mt-3 min-w-0 break-words text-xl font-extrabold leading-snug text-ink">
+            {q.text}
           </h1>
           <div className="mt-4 space-y-2.5" role="group" aria-label={`질문 ${index + 1}: ${q.text}`}>
             {q.options.map((opt, i) => (
@@ -133,7 +136,7 @@ export default function PlayPage({ params }: { params: { publicId: string } }) {
               disabled={!done || loading}
               className="brand-btn-primary flex-[2] !py-3.5 !text-base"
             >
-              {loading ? "제출 중..." : "🔥 결과 보기"}
+              {loading ? "제출 중..." : "결과 보기"}
             </button>
           )}
         </div>
