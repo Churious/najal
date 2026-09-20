@@ -39,9 +39,12 @@ export default function TakeQuizPage({ params }: { params: { publicId: string } 
   if (notFound) {
     return (
       <main className="text-center">
-        <h1 className="mt-10 text-xl font-bold">퀴즈를 찾을 수 없습니다.</h1>
-        <p className="mt-2 text-sm text-slate-500">주소를 다시 확인해 주세요.</p>
-        <Link href="/" className="mt-6 block w-full rounded-xl bg-sky-600 py-3 font-bold text-white">
+        <div aria-hidden className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-white text-5xl shadow-card">
+          🥲
+        </div>
+        <h1 className="mt-4 text-xl font-extrabold text-ink">퀴즈를 찾을 수 없어요</h1>
+        <p className="mt-2 text-sm text-ink/60">주소를 다시 확인해 주세요.</p>
+        <Link href="/" className="brand-btn-primary mt-6 block min-h-[56px] content-center">
           홈으로
         </Link>
       </main>
@@ -49,27 +52,43 @@ export default function TakeQuizPage({ params }: { params: { publicId: string } 
   }
 
   return (
-    <main>
-      <h1 className="mt-6 text-2xl font-bold leading-snug">
-        {owner ? `${owner}의 나잘알` : "나잘알"}에
-        <br />
-        도전해 보세요!
+    <main className="text-center">
+      <p className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-1.5 text-sm font-extrabold text-brand-600 shadow-soft">
+        <span aria-hidden>🧠</span> {owner ? <span className="max-w-[180px] truncate">{owner}의 나잘알</span> : "나잘알"}
+      </p>
+      <h1 className="mx-auto mt-4 max-w-[320px] text-balance text-2xl font-extrabold leading-snug text-ink">
+        {owner ? (
+          <>
+            <span className="min-w-0 break-words text-brand-600">{owner}</span>를 얼마나 잘 알아?
+          </>
+        ) : (
+          <>나를 얼마나 잘 알아?</>
+        )}
       </h1>
-      <p className="mt-2 text-sm text-slate-500">10문제 · 약 1분</p>
-      <input
-        value={nickname}
-        onChange={(e) => setNickname(e.target.value)}
-        maxLength={12}
-        placeholder="내 닉네임 (2~12자)"
-        className="mt-6 w-full rounded-xl border border-slate-300 px-4 py-3 text-lg outline-none focus:border-sky-500"
-      />
-      {error && <p className="mt-3 text-sm text-red-500">{error}</p>}
-      <button
-        onClick={join}
-        className="mt-6 w-full rounded-xl bg-sky-600 py-4 text-lg font-bold text-white hover:bg-sky-700"
-      >
-        참가하기
-      </button>
+      <p className="mt-2 text-sm text-ink/60">10문제 · 약 1분 · 누가 제일 잘 아는지 보여줘!</p>
+
+      <div className="brand-card mt-6 p-5 text-left">
+        <label htmlFor="join-nickname" className="text-sm font-bold text-ink">
+          도전할 내 닉네임
+        </label>
+        <input
+          id="join-nickname"
+          value={nickname}
+          onChange={(e) => setNickname(e.target.value)}
+          maxLength={12}
+          placeholder="내 닉네임 (2~12자)"
+          onKeyDown={(e) => e.key === "Enter" && join()}
+          className="mt-2 w-full rounded-2xl border-2 border-slate-200 px-4 py-3.5 text-lg outline-none transition focus:border-brand-500 focus:ring-4 focus:ring-brand-100"
+        />
+        {error && (
+          <p role="alert" className="mt-3 text-sm font-medium text-red-500">
+            {error}
+          </p>
+        )}
+        <button onClick={join} className="brand-btn-primary mt-4 min-h-[60px]">
+          도전하기 🔥
+        </button>
+      </div>
     </main>
   );
 }

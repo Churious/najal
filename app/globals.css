@@ -3,6 +3,73 @@
 @tailwind utilities;
 
 body {
-  background-color: #f8fafc;
-  color: #0f172a;
+  background-color: #fff8f1;
+  background-image:
+    radial-gradient(circle at 15% 0%, #ffe4e6 0%, transparent 45%),
+    radial-gradient(circle at 90% 12%, #fef3c7 0%, transparent 40%),
+    radial-gradient(circle at 50% 100%, #ffe4e6 0%, transparent 50%);
+  background-attachment: fixed;
+  color: #2a1e1a;
+}
+
+@layer components {
+  .brand-card {
+    @apply rounded-3xl bg-white shadow-card;
+  }
+  .brand-btn {
+    @apply w-full rounded-2xl py-4 text-center text-lg font-bold transition active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200 disabled:cursor-not-allowed;
+  }
+  .brand-btn-primary {
+    @apply brand-btn bg-brand-600 text-white shadow-pop hover:bg-brand-700 disabled:bg-slate-300 disabled:text-white disabled:shadow-none;
+  }
+  .brand-btn-ghost {
+    @apply brand-btn border-2 border-brand-100 bg-white text-brand-700 hover:border-brand-200 hover:bg-brand-50;
+  }
+  .brand-opt {
+    @apply flex min-h-[60px] w-full items-center gap-3 rounded-2xl border-2 bg-white px-4 py-3 text-left text-[15px] leading-snug shadow-soft transition active:scale-[0.99] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200;
+  }
+}
+
+/* 가벼운 질문 전환 애니메이션 */
+@keyframes q-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.q-anim {
+  animation: q-in 0.22s ease-out;
+}
+
+/* 복사 토스트 */
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+.toast-anim {
+  animation: toast-in 0.2s ease-out;
+}
+
+/* 히어로 둥실 일러스트 */
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+.float-y {
+  animation: float-y 3s ease-in-out infinite;
 }
