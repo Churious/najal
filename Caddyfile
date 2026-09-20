@@ -1,3 +1,5 @@
-{$SITE_DOMAIN:localhost} {
+# Placeholder (IP) phase: plain HTTP. When a real domain is ready,
+# change to `{$SITE_DOMAIN}` for automatic HTTPS + HTTP->HTTPS redirect.
+http://{$SITE_DOMAIN} {
 	reverse_proxy web:3000
 }
